@@ -84,6 +84,12 @@ console.log(kansuji(123, { daiji: true, unit: false }));
 console.log(kansuji(1234567890, { daiji: "old" }));
 // => "拾弐億参阡肆佰伍拾陸萬漆阡捌佰玖拾"
 
+console.log(kansuji("１２３"));
+// => TypeError("Non-number string can't be converted")
+
+console.log(kansuji("１２３", { wide: true }));
+// => "百二十三"
+
 console.log(kansuji(Infinity));
 // => TypeError("Infinity can't be converted")
 
