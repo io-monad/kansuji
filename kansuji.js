@@ -12,6 +12,7 @@ kansuji.DOT = "・";
 kansuji.PLUS = "＋";
 kansuji.MINUS = "−";
 kansuji.REGEXP = /^\s*([-+])?([0-9]+)(?:\.([0-9]+))?/;
+kansuji.WIDE_REGEXP = /^[\s　]*([-+−＋])?([0-9０１２３４５６７８９]+)(?:[\.．]([0-9０１２３４５６７８９]+))?/;
 
 function kansuji(n, options) {
   if (typeof n === "number" && isNaN(n)) throw new TypeError("NaN can't be converted");
@@ -23,6 +24,7 @@ function kansuji(n, options) {
   var unit = typeof options.unit === "undefined" ? true  : options.unit;
   var ichi = typeof options.ichi === "undefined" ? false : options.ichi;
   var daiji = typeof options.daiji === "undefined" ? false : options.daiji;
+  var wide = typeof options.wide === "undefined" ? false : options.wide;
 
   var ichiDict = buildIchiDict(ichi);
   var kanjiDigits, kanjiUnits;
@@ -37,7 +39,7 @@ function kansuji(n, options) {
     kanjiUnits  = kansuji.KANJI_UNITS;
   }
 
-  var matched = n.toString().match(kansuji.REGEXP);
+  var matched = n.toString().match(wide ? kansuji.WIDE_REGEXP : kansuji.REGEXP);
   if (!matched) {
     throw new TypeError("Non-number string can't be converted");
   }
@@ -47,8 +49,8 @@ function kansuji(n, options) {
     var decConverted = convert(matched[3], true);
     if (decConverted !== "") converted += kansuji.DOT + decConverted;
   }
-  if (matched[1] === "+") converted = kansuji.PLUS + converted;
-  if (matched[1] === "-") converted = kansuji.MINUS + converted;
+  if (matched[1] === "+" || matched[1] === "＋") converted = kansuji.PLUS + converted;
+  if (matched[1] === "-" || matched[1] === "−") converted = kansuji.MINUS + converted;
   return converted;
 
   function buildIchiDict() {
@@ -68,33 +70,34 @@ function kansuji(n, options) {
     var out = [], keta = 0;
     for (var i = str.length - 1; i >= 0; i--) {
       var code = str.charCodeAt(i);
-      switch (code) {
-        // "0"
-        case 0x30:
-          if (!unit || (isDecimal && out.length !== 0)) {
-            out.unshift(kanjiDigits[0]);
-          }
-          keta++;
-          break;
 
+      if (code >= 0xFF10 && code <= 0xFF19) {
+        // Wide number to ASCII
+        code -= (0xFF10 - 0x30);
+      }
+
+      if (code === 0x30) {
+        // "0"
+        if (!unit || (isDecimal && out.length !== 0)) {
+          out.unshift(kanjiDigits[0]);
+        }
+        keta++;
+      } else {
         // "1" - "9"
-        case 0x31: case 0x32: case 0x33: case 0x34: case 0x35:
-        case 0x36: case 0x37: case 0x38: case 0x39:
-          if (unit && !isDecimal) {
-            var r = keta % 4;
-            if (r === 1 || r === 2 || r === 3) {  // 10, 100, 1000
-              out.unshift(kanjiUnits[r - 1]);
-              if (code === /* "1" */0x31 && !ichiDict[r]) {
-                keta++;
-                break;
-              }
-            } else if (r === 0 && keta !== 0) {   // 10000, 100000000, ...
-              out.unshift(kanjiUnits[(keta / 4) + 2] || "");
+        if (unit && !isDecimal) {
+          var r = keta % 4;
+          if (r === 1 || r === 2 || r === 3) {  // 10, 100, 1000
+            out.unshift(kanjiUnits[r - 1]);
+            if (code === /* "1" */0x31 && !ichiDict[r]) {
+              keta++;
+              continue;
             }
+          } else if (r === 0 && keta !== 0) {   // 10000, 100000000, ...
+            out.unshift(kanjiUnits[(keta / 4) + 2] || "");
           }
-          out.unshift(kanjiDigits[code - 0x30]);
-          keta++;
-          break;
+        }
+        out.unshift(kanjiDigits[code - 0x30]);
+        keta++;
       }
     }
 

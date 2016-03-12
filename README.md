@@ -23,6 +23,7 @@ Convert a number into Japanese Kansuji string.
 | `unit`  | If set to `false`, don't use units and just convert each digit | true  |
 | `ichi`  | If set to `true`, don't omit `一` (ichi) before `千`, `百`, `十`<br>If set to Array, don't omit `一` before each member like `1000` of the array | false |
 | `daiji` | If set to `true`, use Daiji numbers like `壱弐参`, `拾`<br>If set to `"old"`, use old-style Daiji numbers like `零壱弐参肆伍陸漆捌玖`, `拾佰阡萬` | false |
+| `wide`  | If set to `true`, allow wide-character numbers like `１２３` for input | false |
 
 ## Example
 

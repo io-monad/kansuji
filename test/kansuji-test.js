@@ -132,6 +132,32 @@ describe("kansuji", function () {
       assert(kansuji("0123.1230", { daiji: 'old' }) === "佰弐拾参・壱弐参");
     });
   });
+  context("with { wide: true }", function () {
+    it("converts wide-number integer string into Kansuji", function () {
+      assert(kansuji("１２３", { wide: true }) === "百二十三");
+      assert(kansuji("０１２３", { wide: true }) === "百二十三");
+      assert(kansuji("　１２３", { wide: true }) === "百二十三");
+      assert(kansuji("１２３ＡＢＣ", { wide: true }) === "百二十三");
+      assert(kansuji("０", { wide: true }) === "〇");
+      assert(kansuji("０００", { wide: true }) === "〇");
+    });
+    it("converts wide-number float string into Kansuji", function () {
+      assert(kansuji("１２３．４５", { wide: true }) === "百二十三・四五");
+      assert(kansuji("０１２３．１２３０", { wide: true }) === "百二十三・一二三");
+      assert(kansuji("　１２３．１２３　", { wide: true }) === "百二十三・一二三");
+      assert(kansuji("１２３．４５６．７８９", { wide: true }) === "百二十三・四五六");
+      assert(kansuji("０．０", { wide: true }) === "〇");
+      assert(kansuji("００００．００００", { wide: true }) === "〇");
+    });
+    it("converts negative wide-number string into Kansuji", function () {
+      assert(kansuji("−１２３", { wide: true }) === "−百二十三");
+      assert(kansuji("−０１２３", { wide: true }) === "−百二十三");
+    });
+    it("converts positive wide-number string into Kansuji", function () {
+      assert(kansuji("＋１２３", { wide: true }) === "＋百二十三");
+      assert(kansuji("＋０１２３", { wide: true }) === "＋百二十三");
+    });
+  });
   context("given Infinity", function () {
     it("throws TypeError", function () {
       assert.throws(function () { kansuji(Infinity) }, TypeError);
@@ -147,6 +173,7 @@ describe("kansuji", function () {
     it("throws TypeError", function () {
       assert.throws(function () { kansuji("ABC") }, TypeError);
       assert.throws(function () { kansuji("ABC123") }, TypeError);
+      assert.throws(function () { kansuji("１２３") }, TypeError);
       assert.throws(function () { kansuji("") }, TypeError);
     });
   });
