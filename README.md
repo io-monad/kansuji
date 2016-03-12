@@ -1,5 +1,7 @@
 # kansuji
 
+[![Build Status](https://travis-ci.org/io-monad/kansuji.svg?branch=master)](https://travis-ci.org/io-monad/kansuji)
+
 Node module to convert numbers into Japanese Kansuji string (number in Chinese characters).
 
 ## Install
