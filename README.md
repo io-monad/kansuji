@@ -1,6 +1,6 @@
 # kansuji
 
-[![Build Status](https://travis-ci.org/io-monad/kansuji.svg?branch=master)](https://travis-ci.org/io-monad/kansuji)
+[![wercker status](https://app.wercker.com/status/16f414831aa2e9040c7d131911ff2eca/s/master "wercker status")](https://app.wercker.com/project/bykey/16f414831aa2e9040c7d131911ff2eca)
 
 Node module to convert numbers into Japanese Kansuji string (number in Chinese characters).
 
