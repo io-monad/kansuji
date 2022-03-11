@@ -1,7 +1,7 @@
 interface KansujiOptions {
     unit?: string | boolean,
     ichi?: number[] | boolean,
-    daiji?: string | boolean,
+    daiji?: 'old' | boolean,
     wide?: string | boolean
 }
 
