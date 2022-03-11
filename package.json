@@ -1,6 +1,6 @@
 {
   "name": "kansuji-ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Convert numbers into Japanese Kansuji string (number in Chinese characters)",
   "author": "IRIDE Monad <iride.monad@gmail.com>",
   "contributors": [
