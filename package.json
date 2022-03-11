@@ -2,12 +2,12 @@
   "name": "kansuji",
   "version": "1.1.0",
   "description": "Convert numbers into Japanese Kansuji string (number in Chinese characters)",
-  "author": "Alex Lipscomb",
+  "author": "IRIDE Monad <iride.monad@gmail.com>",
   "license": "MIT",
   "repository": "io-monad/kansuji",
-  "homepage": "https://github.com/alexlipscomb/kansuji-ts",
+  "homepage": "https://github.com/io-monad/kansuji",
   "bugs": {
-    "url": "https://github.com/alexlipscomb/kansuji-ts/issues"
+    "url": "https://github.com/io-monad/kansuji/issues"
   },
   "keywords": [
     "japanese",
